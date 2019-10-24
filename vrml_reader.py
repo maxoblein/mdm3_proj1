@@ -40,10 +40,16 @@ def leftright(scan_array):
         if scan_array[i,2] < 0:
             leftside = np.vstack((leftside,scan_array[i,:]))
 
-    
-    print(leftside[:])
-    #print(rightside[1:])
-    #Visualise(rightside[1:])
+    leftside = np.delete(leftside,0,0)
+    rightside = np.delete(rightside,0,0)
+
+    maxleft = np.amax(leftside[:,0])
+    maxright = np.amax(rightside[:,0])
+    if maxright > maxleft:
+        print('This is a left foot')
+
+    else:
+        print('This is a right foot')
 
 
 
