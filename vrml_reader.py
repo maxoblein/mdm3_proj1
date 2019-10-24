@@ -31,8 +31,8 @@ def Visualise(scan_array):
     ax.scatter(scan_array[:,0],scan_array[:,1],scan_array[:,2],s = 0.9)
     plt.show()
 
-def leftright(scan_array):
-    leftside =
+'''def leftright(scan_array):
+    leftside ='''
 
 if __name__ == '__main__':
     #on command line python vrml_reader.py 'Vrmlfile.wrl' option eg 'visualise', 'leftright'
