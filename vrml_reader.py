@@ -31,8 +31,21 @@ def Visualise(scan_array):
     ax.scatter(scan_array[:,0],scan_array[:,1],scan_array[:,2],s = 0.9)
     plt.show()
 
-'''def leftright(scan_array):
-    leftside ='''
+def leftright(scan_array):
+    leftside = np.ones(3)
+    rightside = np.ones(3)
+    for i in range(np.shape(scan_array)[0]):
+        if scan_array[i,2] >=0:
+            rightside = np.vstack((rightside,scan_array[i,:]))
+        if scan_array[i,2] < 0:
+            leftside = np.vstack((leftside,scan_array[i,:]))
+
+    
+    print(leftside[:])
+    #print(rightside[1:])
+    #Visualise(rightside[1:])
+
+
 
 if __name__ == '__main__':
     #on command line python vrml_reader.py 'Vrmlfile.wrl' option eg 'visualise', 'leftright'
@@ -43,7 +56,7 @@ if __name__ == '__main__':
             Visualise(scan_array)
 
         if argv[1] == 'leftright':
-            print('leftright')
+            leftright(scan_array)
 
     if len(argv) < 2:
         print(scan_array)
