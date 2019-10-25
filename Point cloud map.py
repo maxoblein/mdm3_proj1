@@ -4,8 +4,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
 import pandas as pd
 import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
+from vrml_reader import find_coords
 
 
 def point_cloud_viewer(point_data):
@@ -30,7 +32,7 @@ def point_map(datanp, axes, size, cut1, cut2):
     axis1, axis2 = axes
     n,m = size
     Z = datanp[:,[axis1,axis2]]
-    A = np.zeros((n,m), dtype = int)
+    A = np.zeros((n+1,m+1), dtype = int)
     for i in range(len(Z)):
         if Z[i, 0] >= cut1[0] and Z[i, 0] <= cut1[1]:
             if Z[i, 1] >= cut2[0] and Z[i, 1] <= cut2[1]:
@@ -40,12 +42,24 @@ def point_map(datanp, axes, size, cut1, cut2):
 
     return A
 
-inp = sys.argv[1]
-x = load_points_from_file(inp)
-datanp = point_cloud_viewer(x)
-A = point_map(datanp, [0,2], [75, 30], [0, 0.25], [-0.05, 0.05])
+def Initialise_3d(inp, size, cut1, cut2, number):
+    n,m = size
+    X = np.zeros((n+1, m+1, int(number[1] - number[0])), dtype = int)
+    for i in range(number[1] - number[0]):
+        datanp = find_coords(inp[i+number[0]])
+        A = point_map(datanp, [0,2], [n, m], cut1, cut2)
+        X[:,:,i] = X[:,:,i] + A[:,:]
 
-plt.imshow(A)
+    return X
+
+inp = os.listdir('C:/Users/joere/OneDrive/Desktop/MDM Footscan Data/VRML')
+inp = inp[:-2]
+
+X = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [0, 1000])
+x = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [1001, 1289])
+
+plt.imshow(X[:,:,50])
+plt.imshow(x[:,:,50])
 
 #(X, Y), (x,y) = mnist.load_data()
 #print(X[1])
