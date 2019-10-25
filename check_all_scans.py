@@ -11,7 +11,7 @@ if __name__ == '__main__':
     for filename in os.listdir(directory):
         scan_array = find_coords(os.path.join(directory,filename))
         Side = leftright(scan_array)
-        print(type(Side))
-        Label_list = Label_list.append(leftright(scan_array))
+        Label_list.append(Side)
+
 
     print(Label_list)
