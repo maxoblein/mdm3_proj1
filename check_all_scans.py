@@ -4,14 +4,44 @@ import numpy as np
 from vrml_reader import find_coords
 from vrml_reader import leftright
 
-if __name__ == '__main__':
+def calculate_accuracy(gt_labels, pred_labels):
+    # write your code here (remember to return the accuracy at the end!)
+    # gtlabels is the real labels, pred_labels are our predictions
+    # calculate percentage of correctly classified, compare the same
+    counter = 0
+    for i in range(len(pred_labels)):
+        if pred_labels[i] == gt_labels[i]:
+            counter = counter + 1
+
+    accuracy = (counter / len(pred_labels)) * 100
+    return accuracy
+
+def get_true_labels(filename):
+    with open(filename,"r") as labels:
+        CorrectLabels = []
+        for line in labels:
+            line = line.strip()
+            label = str(line)
+            CorrectLabels.append(label)
+    return CorrectLabels
+
+def get_approx_labels(directory):
     Label_list = []
-    print(type(Label_list))
-    directory = sys.argv[1]
     for filename in os.listdir(directory):
         scan_array = find_coords(os.path.join(directory,filename))
         Side = leftright(scan_array)
         Label_list.append(Side)
+    return Label_list
 
 
-    print(Label_list)
+
+
+if __name__ == '__main__':
+    #on command line 1st argument is directory of scans second is file with true labels
+    directory = sys.argv[1]
+    CorrectLabels = get_true_labels(sys.argv[2])
+    ApproxLabels = get_approx_labels(directory)
+    accuracy = calculate_accuracy(CorrectLabels,ApproxLabels)
+
+
+    print(accuracy)
