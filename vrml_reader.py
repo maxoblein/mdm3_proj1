@@ -46,12 +46,10 @@ def leftright(scan_array):
     maxleft = np.amax(leftside[:,0])
     maxright = np.amax(rightside[:,0])
     if maxright > maxleft:
-        print('This is a left foot')
-
+        Side = 'L'
     else:
-        print('This is a right foot')
-
-
+        Side = 'R'
+    return Side
 
 if __name__ == '__main__':
     #on command line python vrml_reader.py 'Vrmlfile.wrl' option eg 'visualise', 'leftright'
