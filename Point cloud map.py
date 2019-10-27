@@ -1,9 +1,7 @@
-from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
 import pandas as pd
-import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -52,39 +50,43 @@ def Initialise_3d(inp, size, cut1, cut2, number):
 
     return X
 
+LR = load_points_from_file('LR.csv')
+
+integer_mapping = {x: i for i,x in enumerate(LR)}
+vec = [integer_mapping[word] for word in LR]
+vec = np.array(vec) - 1288
+
 inp = os.listdir('C:/Users/joere/OneDrive/Desktop/MDM Footscan Data/VRML')
 inp = inp[:-2]
 
 X = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [0, 1000])
 x = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [1001, 1289])
 
-plt.imshow(X[:,:,50])
-plt.imshow(x[:,:,50])
+#plt.imshow(X[:,:,50])
+#plt.imshow(x[:,:,50])
 
-#(X, Y), (x,y) = mnist.load_data()
-#print(X[1])
-#print(X[0].shape)
+Y = np.random.randint(0, 10, 1000)
+y = np.random.randint(0, 10, 288)
 
-#plt.imshow(X[1])
 
-#X = X.reshape(60000, 28, 28, 1)
-#x = x.reshape(10000, 28, 28, 1)
+X = X.reshape(1000, 31, 31, 1)
+x = x.reshape(288, 31, 31, 1)
 
-#Y = to_categorical(Y)
-#y = to_categorical(y)
+Y = to_categorical(vec[0:1000])
+y = to_categorical(vec[1001:1289])
 
-#model = Sequential()
+model = Sequential()
 
-#model.add(Conv2D(64, kernel_size = 3, activation = 'relu', input_shape = (28,28,1)))
-#model.add(Conv2D(32, kernel_size = 3, activation = 'relu'))
-#model.add(Flatten())
-#model.add(Dense(10, activation = 'softmax'))
+model.add(Conv2D(64, kernel_size = 3, activation = 'relu', input_shape = (31,31,1)))
+model.add(Conv2D(32, kernel_size = 3, activation = 'relu'))
+model.add(Flatten())
+model.add(Dense(2, activation = 'softmax'))
 #64, 32 are the number of nodes; kernel_size is the size of the convolution matrix; relu activates the layers between nodes
 #Dense is the layer type for the output layer, Flatten connects the convolution and dense layers; softmax makes the output sum to 1
 
-#model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
-#model.fit(X, Y, validation_data = (x,y), epochs = 3)
+model.fit(X, Y, validation_data = (x,y), epochs = 3)
 
-#print(model.predict(x[:4]))
-#print(y[:4])
+print(model.predict(x[:10]))
+print(y[:10])
