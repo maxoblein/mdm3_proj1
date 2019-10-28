@@ -1,9 +1,9 @@
-import csv
+import pandas as pd
 
-with open('Default Measures.csv', 'r') as csvfile:
-    measurements = csv.reader(csvfile)
-    print(measurements)
-    # Ball_width=[]
-    # Heel_width=[]
-    # for collumn in measurements:
-        
+points = pd.read_csv('MDM Footscan Data\C. Measures\Default Measures.csv', header=0)
+ball= points.iloc[:,2].values
+heel= points.iloc[:,9].values
+
+ratio= (ball/heel)
+print(ratio)
+
