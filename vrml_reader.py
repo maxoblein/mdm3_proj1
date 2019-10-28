@@ -35,9 +35,9 @@ def leftright(scan_array):
     leftside = np.ones(3)
     rightside = np.ones(3)
     for i in range(np.shape(scan_array)[0]):
-        if scan_array[i,2] >=0:
+        if scan_array[i,2] >=0.02:
             rightside = np.vstack((rightside,scan_array[i,:]))
-        if scan_array[i,2] < 0:
+        if scan_array[i,2] <= -0.02:
             leftside = np.vstack((leftside,scan_array[i,:]))
 
     leftside = np.delete(leftside,0,0)
@@ -60,7 +60,8 @@ if __name__ == '__main__':
             Visualise(scan_array)
 
         if argv[1] == 'leftright':
-            leftright(scan_array)
+            print(leftright(scan_array))
+
 
     if len(argv) < 2:
         print(scan_array)
