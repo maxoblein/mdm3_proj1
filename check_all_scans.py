@@ -9,12 +9,15 @@ def calculate_accuracy(gt_labels, pred_labels):
     # gtlabels is the real labels, pred_labels are our predictions
     # calculate percentage of correctly classified, compare the same
     counter = 0
+    incorrect_index_list = []
     for i in range(len(pred_labels)):
         if pred_labels[i] == gt_labels[i]:
             counter = counter + 1
+        else:
+            incorrect_index_list.append(i)
 
     accuracy = (counter / len(pred_labels)) * 100
-    return accuracy
+    return accuracy, incorrect_index_list
 
 def get_true_labels(filename):
     with open(filename,"r") as labels:
@@ -41,7 +44,9 @@ if __name__ == '__main__':
     directory = sys.argv[1]
     CorrectLabels = get_true_labels(sys.argv[2])
     ApproxLabels = get_approx_labels(directory)
-    accuracy = calculate_accuracy(CorrectLabels,ApproxLabels)
+    accuracy, incorrect_index_list = calculate_accuracy(CorrectLabels,ApproxLabels)
+
 
 
     print(accuracy)
+    print(incorrect_index_list)

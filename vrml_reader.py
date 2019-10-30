@@ -35,9 +35,9 @@ def leftright(scan_array):
     leftside = np.ones(3)
     rightside = np.ones(3)
     for i in range(np.shape(scan_array)[0]):
-        if scan_array[i,2] >=0:
+        if scan_array[i,2] >=0.02:
             rightside = np.vstack((rightside,scan_array[i,:]))
-        if scan_array[i,2] < 0:
+        if scan_array[i,2] <= -0.02:
             leftside = np.vstack((leftside,scan_array[i,:]))
 
     leftside = np.delete(leftside,0,0)
@@ -51,6 +51,23 @@ def leftright(scan_array):
         Side = 'R'
     return Side
 
+def Big_Toe_Isol8er(scan_array):
+    side = leftright(scan_array)
+    toe_index = np.argwhere(scan_array[:,0] > 0.15)
+    toe_array = np.ones(3)
+    for i in toe_index:
+        toe_array = np.vstack((toe_array,scan_array[i]))
+    toe_array = np.delete(toe_array,0,0)
+    Visualise(toe_array)
+    if side == 'L':
+        #right side has big toe
+        return 0
+
+    if side == 'R':
+        #left side has big toe
+        return 1
+
+
 if __name__ == '__main__':
     #on command line python vrml_reader.py 'Vrmlfile.wrl' option eg 'visualise', 'leftright'
     argv = sys.argv[1:]
@@ -60,7 +77,11 @@ if __name__ == '__main__':
             Visualise(scan_array)
 
         if argv[1] == 'leftright':
-            leftright(scan_array)
+            print(leftright(scan_array))
+
+        if argv[1] == 'toeline':
+            Big_Toe_Isol8er(scan_array)
+
 
     if len(argv) < 2:
         print(scan_array)
