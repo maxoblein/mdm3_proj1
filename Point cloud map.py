@@ -6,6 +6,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from vrml_reader import find_coords
+from vrml_reader import leftright
 
 
 def point_cloud_viewer(point_data):
@@ -43,50 +44,67 @@ def point_map(datanp, axes, size, cut1, cut2):
 def Initialise_3d(inp, size, cut1, cut2, number):
     n,m = size
     X = np.zeros((n+1, m+1, int(number[1] - number[0])), dtype = int)
-    for i in range(number[1] - number[0]):
-        datanp = find_coords(inp[i+number[0]])
+    for j in range(number[1] - number[0]):
+        datanp = find_coords(inp[j+number[0]])
+        scan_array = find_coords(inp[j+number[0]])
+        leftside = np.ones(3)
+        rightside = np.ones(3)
+        for i in range(np.shape(scan_array)[0]):
+            if scan_array[i,2] >=0.02:
+                rightside = np.vstack((rightside,scan_array[i,:]))
+            if scan_array[i,2] <= -0.02:
+                leftside = np.vstack((leftside,scan_array[i,:]))
+            
+        leftside = np.delete(leftside,0,0)
+        rightside = np.delete(rightside,0,0)
+        
+        maxleft = np.amax(leftside[:,0])
+        maxright = np.amax(rightside[:,0])
+        if maxright > maxleft:
+            datanp[:,2] = datanp[:,2]*-1
         A = point_map(datanp, [0,2], [n, m], cut1, cut2)
-        X[:,:,i] = X[:,:,i] + A[:,:]
+        X[:,:,j] = X[:,:,j] + A[:,:]
 
     return X
 
-LR = load_points_from_file('LR.csv')
+#LR = load_points_from_file('LR.csv')
 
-integer_mapping = {x: i for i,x in enumerate(LR)}
-vec = [integer_mapping[word] for word in LR]
-vec = np.array(vec) - 1288
+#integer_mapping = {x: i for i,x in enumerate(LR)}
+#vec = [integer_mapping[word] for word in LR]
+#vec = np.array(vec) - 1288
 
 inp = os.listdir('C:/Users/joere/OneDrive/Desktop/MDM Footscan Data/VRML')
-inp = inp[:-2]
+inp = inp[:-3]
 
-X = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [0, 1000])
-x = Initialise_3d(inp, [30, 30], [0.15, 0.25], [-0.05, 0.05], [1001, 1289])
+#X = Initialise_3d(inp, [30, 30], [0.1, 0.2], [0, 0.05], [0, 3])
+#X = Initialise_3d(inp, [15, 30], [0.15, 0.2], [0, 0.05], [0, 3])
+X = Initialise_3d(inp, [75, 30], [0, 0.25], [-0.05, 0.05], [0, 10])
+plt.imshow(X[:,:,4])
+#x = Initialise_3d(inp, [20, 40], [0.2, 0.25], [-0.05, 0.05], [1001, 1289])
+
+#plt.imshow(X[:,:,0])
 
 #plt.imshow(X[:,:,50])
 #plt.imshow(x[:,:,50])
 
-Y = np.random.randint(0, 10, 1000)
-y = np.random.randint(0, 10, 288)
+#X = X.reshape(1000, 21, 41, 1)
+#x = x.reshape(288, 21, 41, 1)
 
+#Y = to_categorical(vec[0:1000])
+#y = to_categorical(vec[1001:1289])
 
-X = X.reshape(1000, 31, 31, 1)
-x = x.reshape(288, 31, 31, 1)
+#model = Sequential()
 
-Y = to_categorical(vec[0:1000])
-y = to_categorical(vec[1001:1289])
-
-model = Sequential()
-
-model.add(Conv2D(64, kernel_size = 3, activation = 'relu', input_shape = (31,31,1)))
-model.add(Conv2D(32, kernel_size = 3, activation = 'relu'))
-model.add(Flatten())
-model.add(Dense(2, activation = 'softmax'))
+#model.add(Conv2D(64, kernel_size = 3, activation = 'relu', input_shape = (21,41,1)))
+#model.add(Conv2D(32, kernel_size = 3, activation = 'relu'))
+#model.add(Flatten())
+#model.add(Dense(2, activation = 'softmax'))
 #64, 32 are the number of nodes; kernel_size is the size of the convolution matrix; relu activates the layers between nodes
 #Dense is the layer type for the output layer, Flatten connects the convolution and dense layers; softmax makes the output sum to 1
 
-model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
+#model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
-model.fit(X, Y, validation_data = (x,y), epochs = 3)
+#model.fit(X, Y, validation_data = (x,y), epochs = 3)
 
-print(model.predict(x[:10]))
-print(y[:10])
+#print(model.predict(x[:10]))
+#print(y[:10])
