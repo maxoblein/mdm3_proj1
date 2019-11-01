@@ -7,6 +7,7 @@ import glob
 
     
 def main():
+    '''
     flatness = []
 
     for i in range(len(glob.glob1("","*.wrl"))):
@@ -15,11 +16,13 @@ def main():
         flatness.append(flat)
     #For the length of files ending in wrl use the data points in each file to find whether the foot is flat
     #create a list of points of flat(1) or not flat feet(0)
-    
+    '''
     '''
     flatness = np.vstack((flatness))
     '''
-    print(flatness)    
+    #print(flatness)    
+    
+    FindArch('000006.wrl')
     
     
 def FindArch(inp):
@@ -42,10 +45,10 @@ def FindArch(inp):
     footprint = np.vstack((footprint))
     #combine all arrays within foot print
     
-    '''
+    
     plt.scatter(footprint[:,0], footprint[:,2])
     #plots 2-D graph of foot print, using x values as x and y values as footprints z
-    '''   
+    
     
     width_arch = []
     
@@ -59,10 +62,10 @@ def FindArch(inp):
     width_arch = np.vstack((width_arch))        
     #combines all arrays within width_arch        
     
-    '''
+    
     plt.scatter(width_arch[:,0], width_arch[:,2]) 
     #plots on top of the previous 2-D graph Width_arch values that will be used to calc the width
-    '''
+    
     
     width_arch_y = width_arch[:,2]
     minimum = np.amin(width_arch_y)
