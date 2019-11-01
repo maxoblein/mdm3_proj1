@@ -53,7 +53,7 @@ def leftright(scan_array):
 
 def slices(scan_array,side):
     front_array = np.ones(3)
-    slice_range = np.linspace(scan_array[0,2],scan_array[-1,2],200)
+    slice_range = np.linspace(scan_array[0,2],scan_array[-1,2],50)
     print(np.size(slice_range))
     for i in range(1,np.size(slice_range)):
         slice_array = np.ones(3)
@@ -71,6 +71,7 @@ def slices(scan_array,side):
         front_point = slice_array[np.argmax(slice_array[:,0])]
         front_array = np.vstack((front_array,front_point))
     front_array = np.delete(front_array,0,0)
+    print(front_array)
     return front_array
 
 def inside_line_foot(scan_array):
@@ -138,7 +139,7 @@ if __name__ == '__main__':
 
         if argv[1] == 'toeline':
             #Big_Toe_Isol8er(scan_array)
-            Visualise(inside_line_foot(scan_array))
+            Big_Toe_Isol8er(scan_array)
 
     if len(argv) < 2:
         print(scan_array)
