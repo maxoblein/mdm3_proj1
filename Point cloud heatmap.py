@@ -6,7 +6,6 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from vrml_reader import find_coords
-from vrml_reader import leftright
 
 
 #def point_cloud_viewer(point_data):
@@ -85,16 +84,8 @@ def Initialise_3d(inp, size, cut1, cut2, cut3, number, axes):
 inp = os.listdir('C:/Users/joere/OneDrive/Desktop/MDM Footscan Data/VRML')
 inp = inp[:-3]
 
-#X = Initialise_3d(inp, [30, 30], [0.1, 0.2], [0, 0.05], [0, 3])
-#X = Initialise_3d(inp, [15, 30], [0.15, 0.2], [0, 0.05], [0, 3])
-X = Initialise_3d(inp, [30, 9], [0.05, 0.15], [0, 0.03], [-0.05, -0.015], [60, 80], [0,1])
-plt.imshow(X[:,:,6])
-#x = Initialise_3d(inp, [20, 40], [0.2, 0.25], [-0.05, 0.05], [1001, 1289])
-
-#plt.imshow(X[:,:,0])
-
-#plt.imshow(X[:,:,50])
-#plt.imshow(x[:,:,50])
+X = Initialise_3d(inp, [75, 30], [0, 0.25], [0, 0.1], [-0.05, 0.05], [0, 10], [0,2])
+plt.imshow(X[:,:,5])
 
 #X = X.reshape(1000, 21, 41, 1)
 #x = x.reshape(288, 21, 41, 1)
