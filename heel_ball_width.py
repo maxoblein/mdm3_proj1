@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from scipy.stats import pearsonr
+import scipy.stats as sts
 import matplotlib.pyplot as plt
 
 
@@ -9,24 +9,26 @@ ball= points.iloc[:,2].values
 instep= points.iloc[:,6].values
 heel= points.iloc[:,9].values
 
-ratio= (ball/heel)
-print(ratio)
+#ratio= (ball/heel)
 
 #plt.hist(ratio, bins=np.arange(min(ratio), max(ratio) +0.01, 0.01))
 #plt.show
 
-mean = np.mean(ratio)
-print("mean =",(mean))
+#mean = np.mean(ratio)
+#print("mean =",(mean))
+#
+#print("minimum =", min(ratio))
+#print("maximun =",max(ratio))
 
-# skew = skew(ratio)
-# print("skew =",(skew))
+r=sts.pearsonr(heel,ball)[0]
 
-print("minimum =", min(ratio))
-print("maximun =",max(ratio))
+#independency test 95% statistical significance 
+Z=(np.sqrt(len(heel)-3)/2)*np.log((1+r)/(1-r))
+if np.abs(Z)<=1.96:
+    print("Data is independent to 95% statistical significance")
+else:
+    print("Data is not independet to 95% statistical significance")
 
-corr=pearsonr(heel,ball)
-print(corr)
-
-plt.scatter(heel, ball)
-plt.show
+#plt.scatter(heel, ball)
+#plt.show
 
