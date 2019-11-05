@@ -3,6 +3,7 @@ import os
 import numpy as np
 from vrml_reader import find_coords
 from vrml_reader import leftright
+from arch import flatness
 
 def calculate_accuracy(gt_labels, pred_labels):
     # write your code here (remember to return the accuracy at the end!)
