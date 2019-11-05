@@ -29,7 +29,16 @@ def Visualise(scan_array):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(scan_array[:,0],scan_array[:,1],scan_array[:,2],s = 0.9)
+    ax = formatting(ax)
     plt.show()
+
+def formatting(ax):
+    ax.set_xlabel('Length',fontsize = 18 )
+    ax.set_ylabel('Height',fontsize = 18 )
+    ax.set_zlabel('Width',fontsize = 18)
+    ax.tick_params(labelsize=14)
+    ax.set_title('Image of footscan 000000.wrl',fontsize = 20)
+    return ax
 
 def leftright(scan_array):
     leftside = np.ones(3)
