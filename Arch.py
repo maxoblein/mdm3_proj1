@@ -1,13 +1,18 @@
+import sys
 import matplotlib.pyplot as plt
 from vrml_reader import find_coords
 from vrml_reader import Visualise
+from check_all_scans import calculate_accuracy
+from check_all_scans import get_true_labels
 import numpy as np
 import array as arr
 import glob
+import pandas as pd
+import csv
 
     
 def main():
-    '''
+    
     flatness = []
 
     for i in range(len(glob.glob1("","*.wrl"))):
@@ -16,13 +21,29 @@ def main():
         flatness.append(flat)
     #For the length of files ending in wrl use the data points in each file to find whether the foot is flat
     #create a list of points of flat(1) or not flat feet(0)
-    '''
-    '''
-    flatness = np.vstack((flatness))
-    '''
+    
+    
+    #flatness = np.v;stack((flatness))
+    for i in range(len(flatness)):
+        flatness[i] = str(flatness[i])
     #print(flatness)    
     
+    '''
     FindArch('000006.wrl')
+    '''
+    # if you want to find the width of the arch of 1 particular data point, uncomment this and comment.
+    
+    
+    #df = pd.read_csv(r"C:\Users\user\Documents\Year 3\MDM3\Shoemaster\mdm3_proj1\flat_labels.csv")
+    
+    df = get_true_labels(r"C:\Users\user\Documents\Year 3\MDM3\Shoemaster\mdm3_proj1\flat_label.txt")
+    
+    
+    #print(df)
+    
+    accuracy, wronglist = calculate_accuracy(df, flatness)
+   
+    print(accuracy)
     
     
 def FindArch(inp):
@@ -63,7 +84,7 @@ def FindArch(inp):
     #combines all arrays within width_arch        
     
     
-    plt.scatter(width_arch[:,0], width_arch[:,2]) 
+    #plt.scatter(width_arch[:,0], width_arch[:,2]) 
     #plots on top of the previous 2-D graph Width_arch values that will be used to calc the width
     
     
@@ -73,9 +94,9 @@ def FindArch(inp):
     #creates list of all y values and finds min and max of those values
     
     width = (maximum-minimum)   
-    '''
-    print('width of the Arch =', width)
-    '''
+    
+    #print('width of the Arch =', width)
+    
     
     if width > 0.04:
         return 1
