@@ -1,0 +1,29 @@
+need clear goal 
+what is the problem? 
+what is the company and why?
+still need to state what you are doing. 
+this is what we are doing and this is our goal. 
+
+not clear where figures and results come from 
+if you have plots of something where did it come from 
+
+introduction 
+dicsussion of state of the art- literature review talk about what that is 
+what is relevent in this project 
+background reading
+
+poor captions 
+should stand alone to explain what it is 
+most are just too short 
+every figure should also be referenced in the text 
+explain the results, dont just show them.
+
+be careful with quotes, make sure they are left and right
+
+no breaking space Figure 1 ... make sure ~ 
+
+subplots, make a plot and put more than one plot in that figure, to describe them all in one caption 
+
+units on figures, axis properly labelled 
+
+  
