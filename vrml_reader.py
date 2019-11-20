@@ -60,91 +60,9 @@ def leftright(scan_array):
         Side = 'R'
     return Side
 
-def slices(scan_array,side):
-    front_array = np.ones(3)
-    slice_range = np.linspace(scan_array[0,2],scan_array[-1,2],50)
-    for i in range(1,np.size(slice_range)):
-        slice_array = np.ones(3)
-
-        if side == 'L':
-            slice_index = np.argwhere(np.logical_and(scan_array[:,2]<=slice_range[i-1],scan_array[:,2]>slice_range[i]))
-        if side == 'R':
-            slice_index = np.argwhere(np.logical_and(scan_array[:,2]>=slice_range[i-1],scan_array[:,2]<slice_range[i]))
-
-        for j in slice_index:
-            slice_array = np.vstack((slice_array,scan_array[j]))
-
-        slice_array = np.delete(slice_array,0,0)
-
-        front_point = slice_array[np.argmax(slice_array[:,0])]
-        front_array = np.vstack((front_array,front_point))
-    front_array = np.delete(front_array,0,0)
-    return front_array
-
-def inside_line_foot(scan_array):
-    side = leftright(scan_array)
-    inside_points = np.ones(3)
-    slice_range = np.linspace(np.amin(scan_array[:,0]),np.amax(scan_array[:,0]))
-    print(slice_range)
-    for i in range(1,np.size(slice_range)):
-        slice_array = np.ones(3)
-        slice_index = np.argwhere(np.logical_and(scan_array[:,0]>=slice_range[i-1],scan_array[:,0]<slice_range[i],scan_array[:,1] < 0.01))
-        print(slice_index)
-        for j in slice_index:
-            slice_array = np.vstack((slice_array,scan_array[j]))
-        slice_array = np.delete(slice_array,0,0)
-        if side == 'L':
-            print(np.argmin(slice_array[:,2]))
-            inside_points = np.vstack((inside_points,slice_array[np.argmin(slice_array[:,2])]))
-        if side == 'R':
-                inside_points = np.vstack((inside_points,slice_array[np.argmax(slice_array[:,2])]))
-    inside_points = np.delete(inside_points,0,0)
-    return inside_points
-
-def find_big_toe_range(front_array):
-    #scan 573
-    for i in range(2,np.size(front_array)):
-        if np.logical_and(front_array[i,0] < front_array[i-1,0],front_array[i,0] < front_array[i-2,0]):
-            #Tip of big toe
-            for j in range(i+2,np.size(front_array)):
-                if np.logical_and(front_array[j,0] > front_array[j-1,0],front_array[j,0] > front_array[j-2,0]):
-                    big_toe_range = [front_array[0,2],front_array[j-1,2]]
-                    return big_toe_range
-
-def angle_of_big_toe(scan_array):
-    tol = 1e-6
-    side = leftright(scan_array)
-
-    toe_index = np.argwhere(scan_array[:,0] > 0.15)
-    toe_array = np.ones(3)
-    for i in toe_index:
-        toe_array = np.vstack((toe_array,scan_array[i]))
-    toe_array = np.delete(toe_array,0,0)
 
 
-    if side == 'L':
-        #right side has big toe
-        ind = np.lexsort((toe_array[:,0],toe_array[:,1],toe_array[:,2]))
-        ind = np.flip(ind)
-        sorted_array = toe_array[ind]
 
-
-    if side == 'R':
-        #left side has big toe
-        ind = np.lexsort((toe_array[:,0],toe_array[:,1],toe_array[:,2]))
-        sorted_array = toe_array[ind]
-
-    front_array = slices(sorted_array,side)
-    big_toe_range = find_big_toe_range(front_array)
-    big_toe_indices = np.argwhere(np.logical_and(toe_array[:,2] < max(big_toe_range), toe_array[:,2] > min(big_toe_range)))
-    big_toe_array = np.ones(3)
-    for i in big_toe_indices:
-        big_toe_array = np.vstack((big_toe_array,toe_array[i]))
-    big_toe_array = np.delete(big_toe_array,0,0)
-    fig2 = plt.figure()
-    ax2 = fig2.add_subplot(111)
-    ax2.scatter(big_toe_array[:,0],big_toe_array[:,2])
-    plt.show()
 if __name__ == '__main__':
     #on command line python vrml_reader.py 'Vrmlfile.wrl' option eg 'visualise', 'leftright'
     argv = sys.argv[1:]
@@ -157,8 +75,7 @@ if __name__ == '__main__':
             print(leftright(scan_array))
 
         if argv[1] == 'toeline':
-            #Big_Toe_Isol8er(scan_array)
-            angle_of_big_toe(scan_array)
+            
 
     if len(argv) < 2:
         print(scan_array)
