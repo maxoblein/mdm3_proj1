@@ -3,7 +3,7 @@ import os
 import numpy as np
 from vrml_reader import find_coords
 from vrml_reader import leftright
-from arch import flatness
+from vrml_reader import is_ball_joint_inflamed
 
 def calculate_accuracy(gt_labels, pred_labels):
     # write your code here (remember to return the accuracy at the end!)
@@ -33,8 +33,8 @@ def get_approx_labels(directory):
     Label_list = []
     for filename in os.listdir(directory):
         scan_array = find_coords(os.path.join(directory,filename))
-        Side = leftright(scan_array)
-        Label_list.append(Side)
+        angle = is_ball_joint_inflamed(scan_array)
+        Label_list.append(angle)
     return Label_list
 
 
@@ -47,7 +47,6 @@ if __name__ == '__main__':
     ApproxLabels = get_approx_labels(directory)
     accuracy, incorrect_index_list = calculate_accuracy(CorrectLabels,ApproxLabels)
 
-
-
+    #
     print(accuracy)
     print(incorrect_index_list)
